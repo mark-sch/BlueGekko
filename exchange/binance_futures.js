@@ -529,6 +529,8 @@ module.exports = class BinanceFutures {
 
   async initUserWebsocket() {
     let response;
+    const me = this;
+    
     try {
       response = await this.ccxtClient.fapiPublicPostListenKey();
     } catch (e) {
@@ -540,8 +542,7 @@ module.exports = class BinanceFutures {
       this.logger.error(`${me.getName()}: invalid listenKey response: ${JSON.stringify(response)}`);
       return undefined;
     }
-
-    const me = this;
+    
     var ws = new WebSocket(`${this.getBaseWebsocketUrl()}/ws/${response.listenKey}`);
     ws.onerror = function(e) {
       me.logger.info(`${me.getName()}: Connection error: ${String(e)}`);
